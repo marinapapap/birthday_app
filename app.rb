@@ -31,12 +31,15 @@ class Application < Sinatra::Base
     time = Time.new
     @name = params[:name]
 
-    @day = params[:day]
+    @day = params[:day].to_i
     @month_text = params[:month]
     @month = months[params[:month]]
 
-    if @day.to_i == time.day && @month == time.month
+    if @day == time.day && @month == time.month
       erb(:today)
+    elsif @day != time.day && @month == time.month && (@day - time.day).positive?
+      @day_dif = @day - time.day
+      erb(:soon)
     else
       erb(:name)
     end
